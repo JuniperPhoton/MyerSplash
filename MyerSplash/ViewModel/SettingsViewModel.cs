@@ -14,7 +14,7 @@ namespace MyerSplash.ViewModel
     public class SettingsViewModel : ViewModelBase
     {
         public static string SAVING_POSITION = "SAVING_POSITION";
-        public static string DEFAULT_SAVING_POSITION = "\\Pictures\\MyerSplash (Can'be modified)";
+        public static string DEFAULT_SAVING_POSITION = "\\Pictures\\MyerSplash (Can't be modified)";
 
         private RelayCommand _backgroundWallpaperHelpCommand;
         public RelayCommand BackgroundWallpaperHelpCommand
