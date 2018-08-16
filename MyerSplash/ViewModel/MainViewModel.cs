@@ -16,6 +16,8 @@ using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using MyerSplashShared.Utils;
 
 namespace MyerSplash.ViewModel
 {
@@ -574,6 +576,8 @@ namespace MyerSplash.ViewModel
             }
 
             IsRefreshing = false;
+
+            await UpdateLiveTileAsync();
         }
 
         public void RemoveTodayHighlight()
@@ -611,6 +615,15 @@ namespace MyerSplash.ViewModel
         public void Activate(object param)
         {
             var task = HandleLaunchArg(param as string);
+        }
+
+        private async Task UpdateLiveTileAsync()
+        {
+            if (App.AppSettings.EnableTile)
+            {
+                Debug.WriteLine("About to update tile.");
+                await LiveTileUpdater.UpdateImagesTileAsync();
+            }
         }
 
         private async Task HandleLaunchArg(string arg)

@@ -9,7 +9,7 @@ namespace MyerSplash.Common
     public static class BackgroundTaskRegister
     {
         private static string NAME => "WallpaperAutoChangeTask";
-        private static uint PERIOD_MINS => 120;
+        private static uint PERIOD_MINS => 240; // 4 hours
 
         public static async Task RegisterAsync()
         {

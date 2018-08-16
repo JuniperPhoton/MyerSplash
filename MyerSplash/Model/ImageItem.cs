@@ -395,12 +395,6 @@ namespace MyerSplash.Model
             BitmapSource.ExpectedFileName = Image.ID + ".jpg";
             BitmapSource.RemoteUrl = url;
             await BitmapSource.LoadBitmapAsync();
-
-            if (Image?.IsUnsplash == false && App.AppSettings.EnableTile && BitmapSource.LocalPath != null)
-            {
-                Debug.WriteLine("About to update tile.");
-                await LiveTileUpdater.UpdateImagesTileAsync(new List<string>() { BitmapSource.LocalPath });
-            }
         }
 
         public async Task CheckAndGetDownloadedFileAsync()

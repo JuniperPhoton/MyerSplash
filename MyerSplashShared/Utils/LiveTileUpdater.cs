@@ -1,8 +1,7 @@
 ﻿using JP.Utils.Debug;
+using MyerSplash.Data;
 using NotificationsExtensions.Tiles;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -12,26 +11,23 @@ namespace MyerSplashShared.Utils
 {
     public static class LiveTileUpdater
     {
-        public static async Task UpdateImagesTileAsync(IEnumerable<string> imagesFilePath)
+        public static async Task UpdateImagesTileAsync()
         {
             try
             {
                 var tile = new TileBinding();
                 var photosContent = new TileBindingContentPhotos();
 
-                var maxCount = imagesFilePath.Count() >= 9 ? 9 : imagesFilePath.Count();
-                for (int i = 0; i < maxCount; i++)
-                {
-                    var path = imagesFilePath.ElementAt(i);
-                    if (string.IsNullOrEmpty(path)) continue;
-                    photosContent.Images.Add(new TileImageSource(path));
-                }
+                var url = UnsplashImageFactory.CreateTodayHighlightImage().Urls.Full;
+
+                photosContent.Images.Add(new TileImageSource(url));
+
                 tile.Content = photosContent;
 
-                Debug.WriteLine("Photos size is " + photosContent.Images.Count);
-
-                var tileContent = new TileContent();
-                tileContent.Visual = new TileVisual();
+                var tileContent = new TileContent
+                {
+                    Visual = new TileVisual()
+                };
                 tileContent.Visual.Branding = TileBranding.NameAndLogo;
                 tileContent.Visual.TileMedium = tile;
                 tileContent.Visual.TileWide = tile;
