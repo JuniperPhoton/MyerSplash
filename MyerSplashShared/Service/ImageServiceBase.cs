@@ -23,7 +23,8 @@ namespace MyerSplashShared.Service
 
         protected CancellationToken GetCancellationToken()
         {
-            if (_cts == null) _cts = _ctsFactory.Create();
+            Cancel();
+            _cts = _ctsFactory.Create();
             return _cts.Token;
         }
 
