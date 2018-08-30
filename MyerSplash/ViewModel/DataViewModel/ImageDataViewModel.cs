@@ -23,6 +23,11 @@ namespace MyerSplash.ViewModel.DataViewModel
             _imageService = service;
         }
 
+        public void Cancel()
+        {
+            _imageService?.Cancel();
+        }
+
         protected override void ClickItem(ImageItem item)
         {
         }
@@ -127,11 +132,10 @@ namespace MyerSplash.ViewModel.DataViewModel
 
         protected async virtual Task<IEnumerable<ImageItem>> RequestAsync(int pageIndex)
         {
-            var cts = CTSFactory.MakeCTS(15000);
             try
             {
                 _imageService.Page = pageIndex;
-                var result = await _imageService.GetImagesAsync(cts.Token);
+                var result = await _imageService.GetImagesAsync();
                 if (result != null)
                 {
                     return CreateImageItems(result);

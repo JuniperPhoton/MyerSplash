@@ -18,6 +18,7 @@ using Windows.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using MyerSplashShared.Utils;
+using MyerSplashShared.Data;
 
 namespace MyerSplash.ViewModel
 {
@@ -468,10 +469,18 @@ namespace MyerSplash.ViewModel
                             {
                                 var task = RefreshListAsync();
                             }
-                            DataUpdated?.Invoke(this, null);
                         }
                     }
                 }
+            }
+        }
+
+        private CancellationTokenSourceFactory _ctsFactory;
+        public CancellationTokenSourceFactory CtsFactory
+        {
+            get
+            {
+                return _ctsFactory ?? (_ctsFactory = CancellationTokenSourceFactory.CreateDefault());
             }
         }
 
@@ -509,7 +518,7 @@ namespace MyerSplash.ViewModel
             Tabs = new ObservableCollection<string>();
 
             DataVM = new ImageDataViewModel(this,
-                new ImageService(Request.GetNewImages, NormalFactory));
+                new ImageService(Request.GetNewImages, NormalFactory, CtsFactory));
         }
 
         private ImageDataViewModel CreateOrCacheDataVm(int index)
@@ -520,21 +529,25 @@ namespace MyerSplash.ViewModel
                 vm = _vms[index];
             }
 
-            if (vm == null)
+            if (vm != null)
+            {
+                vm.Cancel();
+            }
+            else if (vm == null)
             {
                 switch (index)
                 {
                     case NEW_INDEX:
-                        vm = new ImageDataViewModel(this, new ImageService(Request.GetNewImages, NormalFactory));
+                        vm = new ImageDataViewModel(this, new ImageService(Request.GetNewImages, NormalFactory, CtsFactory));
                         break;
                     case FEATURED_INDEX:
-                        vm = new ImageDataViewModel(this, new ImageService(Request.GetFeaturedImages, FeaturedFactory));
+                        vm = new ImageDataViewModel(this, new ImageService(Request.GetFeaturedImages, FeaturedFactory, CtsFactory));
                         break;
                     case RANDOM_INDEX:
-                        vm = new RandomImagesDataViewModel(this, new RandomImageService(NormalFactory));
+                        vm = new RandomImagesDataViewModel(this, new RandomImageService(NormalFactory, CtsFactory));
                         break;
                     case HIGHLIGHTS_INDEX:
-                        vm = new ImageDataViewModel(this, new HighlightImageService(NormalFactory));
+                        vm = new ImageDataViewModel(this, new HighlightImageService(NormalFactory, CtsFactory));
                         break;
                 }
 
@@ -549,7 +562,7 @@ namespace MyerSplash.ViewModel
 
         private async Task SearchByKeywordAsync()
         {
-            var searchService = new SearchImageService(NormalFactory, SearchKeyword);
+            var searchService = new SearchImageService(NormalFactory, CtsFactory, SearchKeyword);
 
             if (Tabs.Count != INDEX_TO_NAME.Count && Tabs.Count > 0)
             {
@@ -577,7 +590,7 @@ namespace MyerSplash.ViewModel
 
             IsRefreshing = false;
 
-            await UpdateLiveTileAsync();
+            DataUpdated?.Invoke(this, null);
         }
 
         public void RemoveTodayHighlight()
@@ -615,6 +628,7 @@ namespace MyerSplash.ViewModel
         public void Activate(object param)
         {
             var task = HandleLaunchArg(param as string);
+            var task2 = UpdateLiveTileAsync();
         }
 
         private async Task UpdateLiveTileAsync()

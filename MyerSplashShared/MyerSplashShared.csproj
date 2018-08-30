@@ -108,10 +108,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\APIException.cs" />
+    <Compile Include="Data\CancellationTokeSourceFactory.cs" />
     <Compile Include="Data\DiagnosisItem.cs" />
     <Compile Include="Data\UnsplashLinks.cs" />
     <Compile Include="Service\CloudService.cs" />
-    <Compile Include="API\CTSFactory.cs" />
     <Compile Include="API\Request.cs" />
     <Compile Include="Service\HighlightImageService.cs" />
     <Compile Include="Utils\CachedBitmapSource.cs" />

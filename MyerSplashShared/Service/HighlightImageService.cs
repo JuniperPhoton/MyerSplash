@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 using System.Threading.Tasks;
 using MyerSplash.Data;
+using MyerSplashShared.Data;
 
 namespace MyerSplashShared.Service
 {
@@ -12,11 +12,12 @@ namespace MyerSplashShared.Service
         private static DateTime END_TIME => DateTime.Parse("2017/03/20");
         private static int COUNT => 20;
 
-        public HighlightImageService(UnsplashImageFactory factory) : base(factory)
+        public HighlightImageService(UnsplashImageFactory factory,
+            CancellationTokenSourceFactory ctsFactory) : base(factory, ctsFactory)
         {
         }
 
-        public async override Task<IEnumerable<UnsplashImage>> GetImagesAsync(CancellationToken token)
+        public async override Task<IEnumerable<UnsplashImage>> GetImagesAsync()
         {
             var list = new ObservableCollection<UnsplashImage>();
 

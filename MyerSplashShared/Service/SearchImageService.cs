@@ -1,7 +1,7 @@
 ﻿using JP.Utils.Data.Json;
 using MyerSplash.Data;
+using MyerSplashShared.Data;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 
@@ -13,19 +13,21 @@ namespace MyerSplashShared.Service
 
         public string Query { get; set; }
 
-        public SearchImageService(UnsplashImageFactory factory, string query) : base(factory)
+        public SearchImageService(UnsplashImageFactory factory,
+            CancellationTokenSourceFactory ctsFactory,
+            string query) : base(factory, ctsFactory)
         {
             Query = query;
         }
 
-        public override async Task<IEnumerable<UnsplashImage>> GetImagesAsync(CancellationToken token)
+        public override async Task<IEnumerable<UnsplashImage>> GetImagesAsync()
         {
-            var result = await _cloudService.SearchImagesAsync(Page, Count, token, Query);
+            var result = await _cloudService.SearchImagesAsync(Page, Count, GetCancellationToken(), Query);
             if (result.IsRequestSuccessful)
             {
                 var rootObj = JsonObject.Parse(result.JsonSrc);
                 var resultArray = JsonParser.GetJsonArrayFromJsonObj(rootObj, "results");
-                var imageList = _factory.GetImages(resultArray.ToString());
+                var imageList = _ImageFactory.GetImages(resultArray.ToString());
                 return imageList;
             }
             else

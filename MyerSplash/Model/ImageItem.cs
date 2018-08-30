@@ -5,12 +5,12 @@ using JP.Utils.UI;
 using MyerSplash.Common;
 using MyerSplash.Data;
 using MyerSplash.ViewModel;
+using MyerSplashShared.Data;
 using MyerSplashShared.Service;
 using MyerSplashShared.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -328,7 +328,8 @@ namespace MyerSplash.Model
             }
         }
 
-        private ImageService _service = new ImageService(null, new UnsplashImageFactory(false));
+        private ImageService _service = new ImageService(null, new UnsplashImageFactory(false),
+            CancellationTokenSourceFactory.CreateDefault());
 
         public ImageItem()
         {
@@ -446,7 +447,7 @@ namespace MyerSplash.Model
 
         public async Task GetExifInfoAsync()
         {
-            var result = await _service.GetImageDetailAsync(Image.ID, JP.Utils.Network.CTSFactory.MakeCTS().Token);
+            var result = await _service.GetImageDetailAsync(Image.ID);
             if (result.IsRequestSuccessful)
             {
                 JsonObject.TryParse(result.JsonSrc, out JsonObject json);

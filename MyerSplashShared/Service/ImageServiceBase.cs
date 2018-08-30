@@ -1,4 +1,5 @@
 ﻿using MyerSplash.Data;
+using MyerSplashShared.Data;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,15 +9,29 @@ namespace MyerSplashShared.Service
     public abstract class ImageServiceBase : IService
     {
         protected CloudService _cloudService = new CloudService();
-        protected UnsplashImageFactory _factory;
+        protected UnsplashImageFactory _ImageFactory;
+        private CancellationTokenSourceFactory _ctsFactory;
+        private CancellationTokenSource _cts;
 
         public int Page { get; set; } = 1;
 
-        public ImageServiceBase(UnsplashImageFactory factory)
+        public ImageServiceBase(UnsplashImageFactory factory, CancellationTokenSourceFactory ctsFactory)
         {
-            _factory = factory;
+            _ImageFactory = factory;
+            _ctsFactory = ctsFactory;
         }
 
-        public abstract Task<IEnumerable<UnsplashImage>> GetImagesAsync(CancellationToken token);
+        protected CancellationToken GetCancellationToken()
+        {
+            if (_cts == null) _cts = _ctsFactory.Create();
+            return _cts.Token;
+        }
+
+        public abstract Task<IEnumerable<UnsplashImage>> GetImagesAsync();
+
+        public void Cancel()
+        {
+            _cts?.Cancel();
+        }
     }
 }

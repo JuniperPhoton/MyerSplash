@@ -119,7 +119,10 @@ namespace MyerSplash.View.Page
 
         private void MainVM_DataUpdated(object sender, EventArgs e)
         {
-            ListControl.ScrollToPosition(_scrollingPositions[MainVM.SelectedIndex]);
+            if (_scrollingPositions.ContainsKey(MainVM.SelectedIndex))
+            {
+                ListControl.ScrollToPosition(_scrollingPositions[MainVM.SelectedIndex]);
+            }
         }
 
         protected override void SetupNavigationBackBtn()

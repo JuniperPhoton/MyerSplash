@@ -1,4 +1,5 @@
 ﻿using MyerSplashShared.API;
+using MyerSplashShared.Data;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -18,7 +19,7 @@ namespace MyerSplashShared.Utils
 
             using (var client = new HttpClient())
             {
-                if (token == null) token = CTSFactory.MakeCTS().Token;
+                if (token == null) token = CancellationTokenSourceFactory.CreateDefault().Create().Token;
 
                 using (var fs = await file.OpenStreamForWriteAsync())
                 {
@@ -41,7 +42,7 @@ namespace MyerSplashShared.Utils
 
             using (var client = new HttpClient())
             {
-                if (token == null) token = CTSFactory.MakeCTS().Token;
+                if (token == null) token = CancellationTokenSourceFactory.CreateDefault().Create().Token;
 
                 var downloadTask = client.GetAsync(new Uri(url), token.Value);
 

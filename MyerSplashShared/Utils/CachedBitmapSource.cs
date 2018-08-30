@@ -1,6 +1,7 @@
 ﻿using JP.Utils.Data;
 using JP.Utils.Debug;
 using MyerSplashShared.API;
+using MyerSplashShared.Data;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -105,7 +106,8 @@ namespace MyerSplashShared.Utils
                 return;
             }
 
-            using (var stream = await FileDownloader.GetIRandomAccessStreamFromUrlAsync(this.RemoteUrl, CTSFactory.MakeCTS().Token))
+            using (var stream = await FileDownloader.GetIRandomAccessStreamFromUrlAsync(this.RemoteUrl, 
+                CancellationTokenSourceFactory.CreateDefault().Create().Token))
             {
                 var file = await SaveStreamIntoFileAsync(stream.AsStream(), ExpectedFileName, cachedFolder);
                 if (file != null)

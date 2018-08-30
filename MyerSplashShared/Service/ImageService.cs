@@ -1,5 +1,6 @@
 ﻿using JP.API;
 using MyerSplash.Data;
+using MyerSplashShared.Data;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,22 +13,23 @@ namespace MyerSplashShared.Service
 
         public int Count { get; set; } = 30;
 
-        public ImageService(string url, UnsplashImageFactory factory) : base(factory)
+        public ImageService(string url, UnsplashImageFactory factory,
+            CancellationTokenSourceFactory ctsFactory) : base(factory, ctsFactory)
         {
             RequestUrl = url;
         }
 
-        public Task<CommonRespMsg> GetImageDetailAsync(string id, CancellationToken token)
+        public Task<CommonRespMsg> GetImageDetailAsync(string id)
         {
-            return _cloudService.GetImageDetailAsync(id, token);
+            return _cloudService.GetImageDetailAsync(id, GetCancellationToken());
         }
 
-        public override async Task<IEnumerable<UnsplashImage>> GetImagesAsync(CancellationToken token)
+        public override async Task<IEnumerable<UnsplashImage>> GetImagesAsync()
         {
-            var result = await _cloudService.GetImagesAsync(Page, Count, token, RequestUrl);
+            var result = await _cloudService.GetImagesAsync(Page, Count, GetCancellationToken(), RequestUrl);
             if (result.IsRequestSuccessful)
             {
-                var imageList = _factory.GetImages(result.JsonSrc);
+                var imageList = _ImageFactory.GetImages(result.JsonSrc);
                 return imageList;
             }
             else
