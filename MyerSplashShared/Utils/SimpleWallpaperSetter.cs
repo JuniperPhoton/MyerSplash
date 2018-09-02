@@ -25,17 +25,19 @@ namespace MyerSplashShared.Utils
 
                     var fileName = Path.GetFileName(url);
 
-                    var pictureLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", CreationCollisionOption.OpenIfExists);
-                    var targetFolder = await pictureLib.CreateFolderAsync("Auto-change wallpapers", CreationCollisionOption.OpenIfExists);
+                    var pictureLib = await KnownFolders.PicturesLibrary.CreateFolderAsync("MyerSplash", 
+                        CreationCollisionOption.OpenIfExists);
+                    var targetFolder = await pictureLib.CreateFolderAsync("Auto-change wallpapers", 
+                        CreationCollisionOption.OpenIfExists);
+
                     var localFolder = ApplicationData.Current.LocalFolder;
 
-                    StorageFile file;
-                    file = (StorageFile)await localFolder.TryGetItemAsync(fileName);
-
                     // Download
-                    if (file == null)
+                    if (!(await localFolder.TryGetItemAsync(fileName) is StorageFile file))
                     {
                         Debug.WriteLine($"===========url {url}==============");
+
+                        await LiveTileUpdater.UpdateLiveTileAsync();
 
                         var imageResp = await client.GetAsync(url);
                         using (var stream = await imageResp.Content.ReadAsStreamAsync())
@@ -60,15 +62,12 @@ namespace MyerSplashShared.Utils
                             {
                                 case 0:
                                     break;
-
                                 case 1:
                                     setResult = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(file);
                                     break;
-
                                 case 2:
                                     setResult = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(file);
                                     break;
-
                                 case 3:
                                     var setDesktopResult = await UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(file);
                                     var setLockscreenResult = await UserProfilePersonalizationSettings.Current.TrySetLockScreenImageAsync(file);

@@ -11,7 +11,7 @@ namespace MyerSplashShared.Utils
 {
     public static class LiveTileUpdater
     {
-        public static async Task UpdateImagesTileAsync()
+        public static async Task UpdateLiveTileAsync()
         {
             try
             {
