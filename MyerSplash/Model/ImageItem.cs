@@ -183,7 +183,7 @@ namespace MyerSplash.Model
                 if (_shareCommand != null) return _shareCommand;
                 return _shareCommand = new RelayCommand(() =>
                 {
-                    DataTransferManager.ShowShareUI();
+                    ToggleShare();
                 });
             }
         }
@@ -455,6 +455,24 @@ namespace MyerSplash.Model
                     }
                 }
             }
+        }
+
+        public void ToggleShare()
+        {
+            DataTransferManager.GetForCurrentView().DataRequested += DownloadItemTemplate_DataRequested;
+            DataTransferManager.ShowShareUI();
+        }
+
+        private async void DownloadItemTemplate_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            var deferral = args.Request.GetDeferral();
+            sender.TargetApplicationChosen += (s, e) =>
+            {
+                deferral.Complete();
+            };
+            await SetDataRequestDataAsync(args.Request);
+            deferral.Complete();
+            DataTransferManager.GetForCurrentView().DataRequested -= DownloadItemTemplate_DataRequested;
         }
     }
 }

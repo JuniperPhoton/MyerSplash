@@ -12,7 +12,6 @@ using System.ComponentModel;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Composition;
@@ -92,8 +91,6 @@ namespace MyerSplash.View.Uc
             InitializeComponent();
             InitComposition();
             this.DataContext = this;
-            var manager = DataTransferManager.GetForCurrentView();
-            manager.DataRequested += _dataTransferManager_DataRequested;
 
             Messenger.Default.Register<GenericMessage<string>>(this, MessengerTokens.REPORT_DOWNLOADED, msg =>
                {
@@ -144,17 +141,6 @@ namespace MyerSplash.View.Uc
             {
                 await DetailContentGrid.WaitForSizeChangedAsync();
             }
-        }
-
-        private async void _dataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
-        {
-            DataRequestDeferral deferral = args.Request.GetDeferral();
-            sender.TargetApplicationChosen += (s, e) =>
-              {
-                  deferral.Complete();
-              };
-            await CurrentImage.SetDataRequestDataAsync(args.Request);
-            deferral.Complete();
         }
 
         private void InitComposition()

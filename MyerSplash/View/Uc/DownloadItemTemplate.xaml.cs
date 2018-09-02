@@ -1,5 +1,6 @@
 ﻿using MyerSplash.Common;
 using MyerSplash.Common.Composition;
+using MyerSplash.Model;
 using MyerSplashShared.Utils;
 using System;
 using System.Numerics;
@@ -22,7 +23,7 @@ namespace MyerSplash.View.Uc
         private Visual _setAsTBVisual;
         private Visual _backFIVisual;
         private Visual _openBtnVisual;
-        private Visual _copyBtnVisual;
+        private Visual _shareBtnVisual;
         private bool _showMenu = false;
 
         public bool IsMenuOn
@@ -76,7 +77,7 @@ namespace MyerSplash.View.Uc
             _setAsTBVisual = SetAsTB.GetVisual();
             _backFIVisual = BackFI.GetVisual();
             _openBtnVisual = OpenBtn.GetVisual();
-            _copyBtnVisual = CopyUrlBtn.GetVisual();
+            _shareBtnVisual = ShareBtn.GetVisual();
 
             var opacityAnimation = _compositor.CreateScalarKeyFrameAnimation();
             opacityAnimation.InsertExpressionKeyFrame(1f, "this.FinalValue");
@@ -86,7 +87,7 @@ namespace MyerSplash.View.Uc
             var animations = _compositor.CreateImplicitAnimationCollection();
             animations["Opacity"] = opacityAnimation;
 
-            _copyBtnVisual.ImplicitAnimations = animations;
+            _shareBtnVisual.ImplicitAnimations = animations;
 
             _setAsWallpaperVisual.SetTranslation(new Vector3(0, 52 * 3, 0));
             _setAsLockVisual.SetTranslation(new Vector3(0, 52 * 2, 0));
@@ -96,7 +97,7 @@ namespace MyerSplash.View.Uc
             _setAsLockVisual.Opacity = 0f;
             _setBothVisual.Opacity = 0f;
             _backFIVisual.Opacity = 0f;
-            _copyBtnVisual.Opacity = 0f;
+            _shareBtnVisual.Opacity = 0f;
         }
 
         private void ShowMenu()
@@ -153,12 +154,17 @@ namespace MyerSplash.View.Uc
 
         private void Img_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            _copyBtnVisual.Opacity = 1f;
+            _shareBtnVisual.Opacity = 1f;
         }
 
         private void Img_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            _copyBtnVisual.Opacity = 0f;
+            _shareBtnVisual.Opacity = 0f;
+        }
+
+        private void ShareBtn_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as DownloadItem)?.ImageItem?.ToggleShare();
         }
     }
 }

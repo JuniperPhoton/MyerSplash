@@ -50,41 +50,33 @@
             Foreground="White"
             Text="{Binding DownloadStatus, Mode=OneWay}" />
         <Button
-            x:Name="CopyUrlBtn"
+            x:Name="ShareBtn"
+            Grid.RowSpan="1"
+            Width="40"
             Grid.Column="1"
             Height="40"
-            Margin="0,0,6,4"
+            Margin="4"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Command="{Binding ImageItem.CopyUrlCommand, Mode=OneWay}"
+            VerticalAlignment="Bottom"      
             PointerEntered="Img_PointerEntered"
+            Background="{x:Null}"
+            Click="ShareBtn_Click"
             Style="{StaticResource ButtonCommonStyle}">
             <Grid>
-                <Rectangle
-                    Height="30"
-                    VerticalAlignment="Center"
-                    Fill="#B8000000"
-                    RadiusX="4"
-                    RadiusY="4" />
-                <StackPanel
-                    Margin="12,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <FontIcon
-                        FontFamily="Segoe MDL2 Assets"
-                        FontSize="{StaticResource SmallFontSize}"
-                        Foreground="White"
-                        Glyph="&#xE8C8;" />
-                    <TextBlock
-                        Margin="8,0,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        FontSize="{StaticResource SmallFontSize}"
-                        Foreground="White"
-                        Text="COPY URL" />
-                </StackPanel>
+                <Ellipse Width="40" Height="40">
+                    <Ellipse.Fill>
+                        <SolidColorBrush Color="{StaticResource ToolButtonEllColor}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <FontIcon
+                    x:Name="ShareontIcon"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="17.333"
+                    Glyph="&#xE72D;">
+                    <FontIcon.Foreground>
+                        <SolidColorBrush Color="White" />
+                    </FontIcon.Foreground>
+                </FontIcon>
             </Grid>
         </Button>
         <StackPanel
