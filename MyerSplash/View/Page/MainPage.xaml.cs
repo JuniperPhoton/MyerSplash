@@ -78,6 +78,11 @@ namespace MyerSplash.View.Page
             MainVM.DataUpdated += MainVM_DataUpdated;
 
             this.SizeChanged += MainPage_SizeChanged;
+
+            if (DeviceHelper.IsXbox)
+            {
+                TitleGridContent.Padding = new Thickness(0);
+            }
         }
 
         private bool _showMoreFlyout = false;

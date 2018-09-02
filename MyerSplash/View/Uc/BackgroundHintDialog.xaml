@@ -20,12 +20,12 @@
                 FontSize="20"
                 FontWeight="Bold"
                 Foreground="{StaticResource MyerSplashThemeColorBrush}"
-                Text="WHAT'S THIS?" />
+                Text="HOW DOES IT WORKS ?" />
             <TextBlock
                 Margin="12"
                 FontSize="15"
                 Foreground="#CCFFFFFF"
-                Text="Change your wallpaper automatically in background every day. All wallpapers are from Unsplash and are well chosen by myself :P"
+                Text="Change your wallpaper automatically in background every day. Most wallpapers are from Unsplash and some of them are taken by myself :P"
                 TextWrapping="Wrap" />
         </StackPanel>
         <Button

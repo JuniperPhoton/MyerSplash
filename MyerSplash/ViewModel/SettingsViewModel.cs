@@ -138,7 +138,7 @@ namespace MyerSplash.ViewModel
                 }
             }
 
-            ToastService.SendToast("Temp files have been cleaned.");
+            ToastService.SendToast("Temp files have been cleaned up.");
         }
 
         public async Task CalculateCacheAsync()

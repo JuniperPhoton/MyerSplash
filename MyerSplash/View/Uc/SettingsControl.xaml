@@ -84,7 +84,7 @@
                             IsOn="{Binding Source={StaticResource AppSettings}, Path=EnableScaleAnimation, Mode=TwoWay}"
                             Style="{StaticResource ToggleSwitchStyle}" />
                     </Grid>
-                    <Grid Height="{StaticResource SettingsSwitchItemHeight}">
+                    <Grid x:Name="CompatModeGrid" Height="{StaticResource SettingsSwitchItemHeight}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />

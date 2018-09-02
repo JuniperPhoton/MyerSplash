@@ -108,6 +108,8 @@ namespace MyerSplash.Common
         {
             get
             {
+                // No option for Xbox.
+                if (DeviceUtil.IsXbox) return true;
                 return ReadSettings(nameof(EnableCompactMode), false);
             }
             set
