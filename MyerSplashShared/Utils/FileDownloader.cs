@@ -42,7 +42,7 @@ namespace MyerSplashShared.Utils
 
             using (var client = new HttpClient())
             {
-                if (token == null) token = CancellationTokenSourceFactory.CreateDefault().Create().Token;
+                if (token == null) token = CancellationTokenSourceFactory.CreateDefault(15000).Create().Token;
 
                 var downloadTask = client.GetAsync(new Uri(url), token.Value);
 
