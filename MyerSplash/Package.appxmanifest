@@ -24,9 +24,6 @@
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#070707" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="portrait" />
-        </uap:InitialRotationPreference>
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="BackgroundTask.WallpaperAutoChangeTask">
