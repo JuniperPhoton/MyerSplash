@@ -19,6 +19,10 @@ namespace MyerSplash.Common
                 Debug.WriteLine("IsBackgroundTaskRegistered: true");
                 return;
             }
+            if(AppSettings.Instance.BackgroundWallpaperSource == 0)
+            {
+                return;
+            }
             uint period;
             switch (AppSettings.Instance.BackgroundCheckingInterval)
             {
